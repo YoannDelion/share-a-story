@@ -6,10 +6,14 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\StoryRepository")
- * @ApiResource()
+ * @ApiResource(
+ *     normalizationContext = { "groups" = { "story_read" } },
+ *     denormalizationContext = { "groups" = { "story_write" } }
+ * )
  */
 class Story
 {
@@ -17,37 +21,44 @@ class Story
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("story_read")
      */
     private $id;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"story_read", "story_write"})
      */
     private $content;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="stories")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"story_read", "story_write"})
      */
     private $author;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"story_read", "story_write"})
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"story_read", "story_write"})
      */
     private $updated_at;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="story", orphanRemoval=true)
+     * @Groups({"story_read", "story_write"})
      */
     private $comments;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="stories")
+     * @Groups({"story_read", "story_write"})
      */
     private $categories;
 

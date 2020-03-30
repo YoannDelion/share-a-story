@@ -6,10 +6,14 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
- * @ApiResource()
+ * @ApiResource(
+ *     normalizationContext = { "groups" = { "category_read" } },
+ *     denormalizationContext = { "groups" = { "category_write" } }
+ * )
  */
 class Category
 {
@@ -17,26 +21,31 @@ class Category
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("category_read")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"category_read", "cataegory_write"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"category_read", "cataegory_write"})
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"category_read", "cataegory_write"})
      */
     private $updated_at;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Story", mappedBy="categories")
+     * @Groups({"category_read", "cataegory_write"})
      */
     private $stories;
 

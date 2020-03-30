@@ -7,10 +7,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @ApiResource()
+ * @ApiResource(
+ *     normalizationContext={ "groups" = { "user_read" } },
+ *     denormalizationContext={ "groups" = { "user_write" } }
+ * )
  */
 class User implements UserInterface
 {
@@ -18,32 +22,38 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("user_read")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups({"user_read", "user_write"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"user_read", "user_write"})
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Groups({"user_read", "user_write"})
      */
     private $password;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Story", mappedBy="author", orphanRemoval=true)
+     * @Groups({"user_read", "user_write"})
      */
     private $stories;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="author", orphanRemoval=true)
+     * @Groups({"user_read", "user_write"})
      */
     private $comments;
 
@@ -77,7 +87,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -104,7 +114,7 @@ class User implements UserInterface
      */
     public function getPassword(): string
     {
-        return (string) $this->password;
+        return (string)$this->password;
     }
 
     public function setPassword(string $password): self
