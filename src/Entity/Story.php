@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\StoryRepository")
@@ -28,19 +29,22 @@ class Story
     /**
      * @ORM\Column(type="text")
      * @Groups({"story_read", "story_write"})
+     * @Assert\NotBlank()
      */
     private $content;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="stories")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"story_read", "story_write"})
+     * @Groups({"story_read", "story_wite"})
+     * @Assert\NotNull()
      */
     private $author;
 
     /**
      * @ORM\Column(type="datetime")
      * @Groups({"story_read", "story_write"})
+     * @Assert\NotNull()
      */
     private $created_at;
 

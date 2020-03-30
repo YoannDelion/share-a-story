@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
@@ -26,6 +27,7 @@ class Comment
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"comment_read", "comment_write"})
+     * @Assert\NotBlank()
      */
     private $content;
 
@@ -33,12 +35,14 @@ class Comment
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"comment_read", "comment_write"})
+     * @Assert\NotNull()
      */
     private $author;
 
     /**
      * @ORM\Column(type="datetime")
      * @Groups({"comment_read", "comment_write"})
+     * @Assert\NotNull()
      */
     private $created_at;
 
@@ -52,6 +56,7 @@ class Comment
      * @ORM\ManyToOne(targetEntity="App\Entity\Story", inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"comment_read", "comment_write"})
+     * @Assert\NotNull()
      */
     private $story;
 
