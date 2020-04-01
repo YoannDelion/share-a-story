@@ -35,26 +35,25 @@ class Category
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
-     * @Groups({"category_item_read", "category_collection_read", "cataegory_write"})
+     * @Groups({"category_item_read", "category_collection_read", "category_write"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"category_item_read", "cataegory_write"})
-     * @Assert\NotNull()
+     * @Groups({"category_item_read", "category_write"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Groups({"category_item_read", "cataegory_write"})
+     * @Groups({"category_item_read", "category_write"})
      */
     private $updatedAt;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Story", mappedBy="categories")
-     * @Groups({"category_item_read", "cataegory_write"})
+     * @Groups({"category_item_read", "category_write"})
      */
     private $stories;
 
