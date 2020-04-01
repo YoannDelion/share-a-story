@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,8 +14,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ApiResource(
- *     normalizationContext={ "groups" = { "user_read" } },
- *     denormalizationContext={ "groups" = { "user_write" } }
+ *     normalizationContext={ "groups" = { "user_item_read" } },
+ *     denormalizationContext={ "groups" = { "user_write" } },
+ *     itemOperations={
+ *          "get", "put", "delete"
+ *     },
+ *     collectionOperations={ "get" = {"normalization_context" = { "groups" = { "user_collection_read" } } },
+ *          "post"
+ *      }
  * )
  */
 class User implements UserInterface
@@ -23,13 +30,13 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups("user_read")
+     * @Groups({"user_item_read", "user_collection_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"user_read", "user_write"})
+     * @Groups({"user_item_read", "user_collection_read", "user_write"})
      * @Assert\Email()
      * @Assert\NotBlank()
      */
@@ -37,27 +44,29 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="json")
-     * @Groups({"user_read", "user_write"})
+     * @Groups({"user_write"})
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Groups({"user_read", "user_write"})
+     * @Groups({"user_write"})
      * @Assert\NotBlank()
      */
     private $password;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Story", mappedBy="author", orphanRemoval=true)
-     * @Groups({"user_read", "user_write"})
+     * @ApiSubresource()
+     * @Groups({"user_write"})
      */
     private $stories;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="author", orphanRemoval=true)
-     * @Groups({"user_read", "user_write"})
+     * @ApiSubresource()
+     * @Groups({"user_write"})
      */
     private $comments;
 
@@ -153,6 +162,16 @@ class User implements UserInterface
         return $this->stories;
     }
 
+    /**
+     * Return number of stories
+     * @return int
+     * @Groups("user_item_read")
+     */
+    public function getStoriesNumber(): int
+    {
+        return count($this->stories);
+    }
+
     public function addStory(Story $story): self
     {
         if (!$this->stories->contains($story)) {
@@ -182,6 +201,16 @@ class User implements UserInterface
     public function getComments(): Collection
     {
         return $this->comments;
+    }
+
+    /**
+     * Return number of comments
+     * @return int
+     * @Groups("user_item_read")
+     */
+    public function getCommentsNumber(): int
+    {
+        return count($this->comments);
     }
 
     public function addComment(Comment $comment): self

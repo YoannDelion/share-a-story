@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -10,8 +11,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
  * @ApiResource(
- *     normalizationContext = { "groups" = { "comment_read" } },
- *     denormalizationContext = { "groups" = { "comment_write" } }
+ *     normalizationContext = { "groups" = { "comment_item_read", "user_collection_read", "story_collection_read" } },
+ *     denormalizationContext = { "groups" = { "comment_write" } },
+ *     itemOperations = { "get", "put", "delete" },
+ *     collectionOperations = {
+ *          "get" = { "normalization_context" = { "groups" = { "comment_collection_read", "user_collection_read" } } } ,
+ *          "post"
+ *     }
  * )
  */
 class Comment
@@ -20,13 +26,13 @@ class Comment
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups("comment_read")
+     * @Groups({"comment_item_read", "comment_collection_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"comment_read", "comment_write"})
+     * @Groups({"comment_item_read", "comment_collection_read", "comment_write"})
      * @Assert\NotBlank()
      */
     private $content;
@@ -34,28 +40,28 @@ class Comment
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"comment_read", "comment_write"})
+     * @Groups({ "comment_item_read", "comment_collection_read", "comment_write"})
      * @Assert\NotNull()
      */
     private $author;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"comment_read", "comment_write"})
+     * @Groups({"comment_item_read", "comment_collection_read", "comment_write"})
      * @Assert\NotNull()
      */
-    private $created_at;
+    private $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Groups({"comment_read", "comment_write"})
+     * @Groups({"comment_item_read", "comment_collection_read", "comment_write"})
      */
-    private $updated_at;
+    private $updatedAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Story", inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"comment_read", "comment_write"})
+     * @Groups({"comment_item_read", "comment_write"})
      * @Assert\NotNull()
      */
     private $story;
@@ -89,26 +95,26 @@ class Comment
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $created_at): self
+    public function setCreatedAt(DateTimeInterface $createdAt): self
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updated_at): self
+    public function setUpdatedAt(?DateTimeInterface $updatedAt): self
     {
-        $this->updated_at = $updated_at;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

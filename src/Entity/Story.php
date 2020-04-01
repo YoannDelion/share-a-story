@@ -12,8 +12,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\StoryRepository")
  * @ApiResource(
- *     normalizationContext = { "groups" = { "story_read" } },
- *     denormalizationContext = { "groups" = { "story_write" } }
+ *     normalizationContext = { "groups" = { "story_item_read", "comment_collection_read", "category_collection_read", "user_collection_read" } },
+ *     denormalizationContext = { "groups" = { "story_write" } },
+ *     itemOperations = { "get", "put", "delete" },
+ *     collectionOperations={
+ *          "get" = { "normalization_context" = { "groups" = { "story_collection_read", "user_collection_read" } } },
+ *          "post"
+ *     }
  * )
  */
 class Story
@@ -22,13 +27,13 @@ class Story
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups("story_read")
+     * @Groups({"story_item_read", "story_collection_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="text")
-     * @Groups({"story_read", "story_write"})
+     * @Groups({"story_item_read", "story_write"})
      * @Assert\NotBlank()
      */
     private $content;
@@ -36,33 +41,33 @@ class Story
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="stories")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"story_read", "story_wite"})
+     * @Groups({"story_item_read", "story_collection_read", "story_wite"})
      * @Assert\NotNull()
      */
     private $author;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"story_read", "story_write"})
+     * @Groups({"story_item_read", "story_collection_read", "story_write"})
      * @Assert\NotNull()
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Groups({"story_read", "story_write"})
+     * @Groups({"story_item_read", "story_collection_read", "story_write"})
      */
     private $updated_at;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="story", orphanRemoval=true)
-     * @Groups({"story_read", "story_write"})
+     * @Groups({"story_item_read"})
      */
     private $comments;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="stories")
-     * @Groups({"story_read", "story_write"})
+     * @Groups({"story_item_read", "story_write"})
      */
     private $categories;
 
@@ -80,6 +85,16 @@ class Story
     public function getContent(): ?string
     {
         return $this->content;
+    }
+
+    /**
+     * Return the preview of the content
+     * @return string
+     * @Groups("story_collection_read")
+     */
+    public function getContentPreview(): string
+    {
+        return mb_substr($this->content, 0, 50);
     }
 
     public function setContent(string $content): self
@@ -131,6 +146,16 @@ class Story
     public function getComments(): Collection
     {
         return $this->comments;
+    }
+
+    /**
+     * Return number of comment
+     * @return int
+     * @Groups({"story_item_read", "story_collection_read"})
+     */
+    public function getCommentsNumber(): int
+    {
+        return count($this->comments);
     }
 
     public function addComment(Comment $comment): self

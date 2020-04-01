@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,8 +13,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
  * @ApiResource(
- *     normalizationContext = { "groups" = { "category_read" } },
- *     denormalizationContext = { "groups" = { "category_write" } }
+ *     normalizationContext = { "groups" = { "category_item_read", "story_collection_read", "user_collection_read" } },
+ *     denormalizationContext = { "groups" = { "category_write" } },
+ *     itemOperations={ "get", "put", "delete" },
+ *     collectionOperations={ 
+ *          "get" = { "normalization_context" = { "groups" = { "category_collection_read" } } },
+ *          "post"
+ *     }
  * )
  */
 class Category
@@ -22,33 +28,33 @@ class Category
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups("category_read")
+     * @Groups({"category_item_read", "category_collection_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
-     * @Groups({"category_read", "cataegory_write"})
+     * @Groups({"category_item_read", "category_collection_read", "cataegory_write"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"category_read", "cataegory_write"})
+     * @Groups({"category_item_read", "cataegory_write"})
      * @Assert\NotNull()
      */
-    private $created_at;
+    private $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Groups({"category_read", "cataegory_write"})
+     * @Groups({"category_item_read", "cataegory_write"})
      */
-    private $updated_at;
+    private $updatedAt;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Story", mappedBy="categories")
-     * @Groups({"category_read", "cataegory_write"})
+     * @Groups({"category_item_read", "cataegory_write"})
      */
     private $stories;
 
@@ -74,26 +80,26 @@ class Category
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $created_at): self
+    public function setCreatedAt(DateTimeInterface $createdAt): self
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updated_at): self
+    public function setUpdatedAt(?DateTimeInterface $updatedAt): self
     {
-        $this->updated_at = $updated_at;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
@@ -104,6 +110,15 @@ class Category
     public function getStories(): Collection
     {
         return $this->stories;
+    }
+
+    /**
+     * Return the number of stories
+     * @return int
+     * @Groups({"category_item_read", "category_collection_read"})
+     */
+    public function getStoriesNumber(): int {
+        return count($this->stories);
     }
 
     public function addStory(Story $story): self
