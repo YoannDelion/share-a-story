@@ -15,6 +15,13 @@
     },
     "dependencies": {
         "react-dom": "latest",
-      "react-router-dom": "latest"
+      "react-router-dom": "latest",
+        "redux-logger": "latest",
+        "@reduxjs/toolkit": "latest",
+        "redux": "latest",
+        "axios": "latest",
+      "react": "latest",
+      "react-redux": "latest",
+      "moment": "latest"
     }
 }
