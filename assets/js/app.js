@@ -9,6 +9,7 @@ import StoryListPage from './Components/StoryListPage'
 import '../css/app.scss'
 import 'bulma'
 import store from './store'
+import LoginPage from './Components/LoginPage'
 
 const App = () => {
     // Allow access to the history object
@@ -20,6 +21,7 @@ const App = () => {
               <NavbarWithRouter/>
               <Switch>
                   <Route path="/stories" component={StoryListPage}/>
+                  <Route path="/login" component={LoginPage}/>
                   <Route path="/" component={HomePage}/>
               </Switch>
           </HashRouter>
