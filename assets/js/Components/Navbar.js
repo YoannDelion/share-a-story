@@ -1,55 +1,63 @@
 import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
+import axios from 'axios'
 
-const Navbar = () => (
-  <nav className="navbar" role="navigation" aria-label="main navigation">
-      <div className="navbar-brand">
-          <Link className="navbar-item" to="/">
-              Share a story
-          </Link>
+const Navbar = () => {
 
-          <a role="button" className="navbar-burger burger" aria-label="menu" aria-expanded="false"
-             data-target="navbarBasicExample">
-              <span aria-hidden="true"></span>
-              <span aria-hidden="true"></span>
-              <span aria-hidden="true"></span>
-          </a>
-      </div>
+    const handleLogout = () => {
+        window.localStorage.removeItem('authToken')
+        delete axios.defaults.headers['Authorization']
+    }
 
-      <div id="navbarBasicExample" className="navbar-menu">
-          <div className="navbar-start">
+    return (
+      <nav className="navbar" role="navigation" aria-label="main navigation">
+          <div className="navbar-brand">
               <Link className="navbar-item" to="/">
-                  Home
+                  Share a story
               </Link>
 
-              <NavLink className="navbar-item" to="/stories">
-                  Stories
-              </NavLink>
-
-              <div className="navbar-item">
-                  <NavLink className="button is-info" to="/stories/new">
-                      Share my story
-                  </NavLink>
-              </div>
+              <a role="button" className="navbar-burger burger" aria-label="menu" aria-expanded="false"
+                 data-target="navbarBasicExample">
+                  <span aria-hidden="true"></span>
+                  <span aria-hidden="true"></span>
+                  <span aria-hidden="true"></span>
+              </a>
           </div>
 
-          <div className="navbar-end">
-              <div className="navbar-item">
-                  <div className="buttons">
-                      <NavLink to="/signup" className="button is-primary">
-                          Sign up
-                      </NavLink>
-                      <button className="button is-danger">Log out</button>
-                      <NavLink to="/login" className="button is-light">
-                          Log in
+          <div id="navbarBasicExample" className="navbar-menu">
+              <div className="navbar-start">
+                  <Link className="navbar-item" to="/">
+                      Home
+                  </Link>
+
+                  <NavLink className="navbar-item" to="/stories">
+                      Stories
+                  </NavLink>
+
+                  <div className="navbar-item">
+                      <NavLink className="button is-info" to="/stories/new">
+                          Share my story
                       </NavLink>
                   </div>
               </div>
-          </div>
-      </div>
-  </nav>
-)
 
+              <div className="navbar-end">
+                  <div className="navbar-item">
+                      <div className="buttons">
+                          <NavLink to="/signup" className="button is-primary">
+                              Sign up
+                          </NavLink>
+                          <button onClick={handleLogout} className="button is-danger">Log out</button>
+                          <NavLink to="/login" className="button is-light">
+                              Log in
+                          </NavLink>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </nav>
+    )
+}
 export default Navbar
 
 document.addEventListener('DOMContentLoaded', () => {
