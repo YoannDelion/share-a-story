@@ -4,12 +4,13 @@ import { Link, NavLink } from 'react-router-dom'
 import axios from 'axios'
 import { logout } from '../slices/authSlice'
 
-const Navbar = ({ isLogged, logout }) => {
+const Navbar = ({ isLogged, logout, history }) => {
 
     const handleLogout = () => {
         logout()
         window.localStorage.removeItem('authToken')
         delete axios.defaults.headers['Authorization']
+        history.replace('/login')
     }
 
     return (
@@ -49,13 +50,15 @@ const Navbar = ({ isLogged, logout }) => {
                       <div className="buttons">
                           {isLogged ? <button onClick={handleLogout} className="button is-danger">Log out</button>
                             :
-                            <NavLink to="/signup" className="button is-primary">
-                                Sign up
-                            </NavLink>
+                            <>
+                                <NavLink to="/signup" className="button is-primary">
+                                    Sign up
+                                </NavLink>
+                                <NavLink to="/login" className="button is-light">
+                                    Log in
+                                </NavLink>
+                            </>
                           }
-                          <NavLink to="/login" className="button is-light">
-                              Log in
-                          </NavLink>
                       </div>
                   </div>
               </div>

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { loginAttempt } from '../slices/authSlice'
 
-const LoginPage = ({ loginAttempt }) => {
+const LoginPage = ({ loginAttempt, history }) => {
 
     const [credentials, setCredentials] = useState({ username: '', password: '' })
     const [error, setError] = useState('')
@@ -18,6 +18,7 @@ const LoginPage = ({ loginAttempt }) => {
         try {
             await loginAttempt(credentials)
             setError('')
+            history.replace('/')
         } catch (e) {
             setError('Invalid Credentials !')
         }
