@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import axios from 'axios'
+import { connect } from 'react-redux'
+import { loginAttempt } from '../slices/authSlice'
 
-const LoginPage = () => {
+const LoginPage = ({ loginAttempt }) => {
 
     const [credentials, setCredentials] = useState({ username: '', password: '' })
     const [error, setError] = useState('')
@@ -15,14 +16,8 @@ const LoginPage = () => {
         event.preventDefault()
 
         try {
-            const token = await axios.post('http://127.0.0.1:8000/api/login_check', credentials)
-              .then(response => {
-                  return response.data.token
-              })
-
+            await loginAttempt(credentials)
             setError('')
-            window.localStorage.setItem('authToken', token)
-            axios.defaults.headers['Authorization'] = `Bearer ${token}`
         } catch (e) {
             setError('Invalid Credentials !')
         }
@@ -39,7 +34,8 @@ const LoginPage = () => {
                   <div className='field'>
                       <label className='label'>Email</label>
                       <div className='control has-icons-left has-icons-right'>
-                          <input onChange={handleChange} className={'input' + (error && ' is-danger')} type='email' placeholder='Enter your email'
+                          <input onChange={handleChange} className={'input' + (error && ' is-danger')} type='email'
+                                 placeholder='Enter your email'
                                  name='username'
                                  value={credentials.username}/>
                           <span className='icon is-small is-left'>
@@ -54,7 +50,8 @@ const LoginPage = () => {
                   <div className='field'>
                       <label className='label'>Password</label>
                       <div className='control has-icons-left has-icons-right'>
-                          <input onChange={handleChange} className={'input' + (error && ' is-danger')} type='password' placeholder='Password'
+                          <input onChange={handleChange} className={'input' + (error && ' is-danger')} type='password'
+                                 placeholder='Password'
                                  name='password'
                                  value={credentials.password}/>
                           <span className='icon is-small is-left'>
@@ -77,4 +74,4 @@ const LoginPage = () => {
     )
 }
 
-export default LoginPage
+export default connect(null, { loginAttempt })(LoginPage)

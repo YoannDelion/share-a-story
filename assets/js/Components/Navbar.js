@@ -1,10 +1,13 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { Link, NavLink } from 'react-router-dom'
 import axios from 'axios'
+import { logout } from '../slices/authSlice'
 
-const Navbar = () => {
+const Navbar = ({ isLogged, logout }) => {
 
     const handleLogout = () => {
+        logout()
         window.localStorage.removeItem('authToken')
         delete axios.defaults.headers['Authorization']
     }
@@ -44,10 +47,12 @@ const Navbar = () => {
               <div className="navbar-end">
                   <div className="navbar-item">
                       <div className="buttons">
-                          <NavLink to="/signup" className="button is-primary">
-                              Sign up
-                          </NavLink>
-                          <button onClick={handleLogout} className="button is-danger">Log out</button>
+                          {isLogged ? <button onClick={handleLogout} className="button is-danger">Log out</button>
+                            :
+                            <NavLink to="/signup" className="button is-primary">
+                                Sign up
+                            </NavLink>
+                          }
                           <NavLink to="/login" className="button is-light">
                               Log in
                           </NavLink>
@@ -58,8 +63,14 @@ const Navbar = () => {
       </nav>
     )
 }
-export default Navbar
 
+const mapStateToProps = (state) => ({
+    isLogged: state.authReducer.isLogged
+})
+
+export default connect(mapStateToProps, { logout })(Navbar)
+
+// Toggle menu on mobile
 document.addEventListener('DOMContentLoaded', () => {
 
     // Get all "navbar-burger" elements
