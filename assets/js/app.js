@@ -12,6 +12,7 @@ import store from './store'
 import LoginPage from './Components/LoginPage'
 import PrivateRoute from './Components/PrivateRoute'
 import PublicRoute from './Components/PublicRoute'
+import StoryPage from './Components/StoryPage'
 
 const App = () => {
     // Allow access to the history object
@@ -22,6 +23,7 @@ const App = () => {
           <HashRouter>
               <NavbarWithRouter/>
               <Switch>
+                  <PrivateRoute path="/stories/:id" component={StoryPage}/>
                   <PrivateRoute path="/stories" component={StoryListPage}/>
                   <PublicRoute path="/login" component={LoginPage}/>
                   <Route path="/" component={HomePage}/>

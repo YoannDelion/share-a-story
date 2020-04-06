@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { fetchAllStories } from '../slices/storySlice'
 import moment from 'moment'
+import { Link } from 'react-router-dom'
 
 const StoryListPage = ({ stories, isFetching, fetchAllStories }) => {
 
@@ -25,6 +26,7 @@ const StoryListPage = ({ stories, isFetching, fetchAllStories }) => {
                           <p className="card-footer-item">{`Comments : ${story.commentsNumber}`}</p>
                           <p className="card-footer-item">{moment(story.createdAt).format('DD/MM/YYYY hh:mm:ss')}</p>
                           <p className="card-footer-item">{story.author.email}</p>
+                          <Link to={`/stories/${story.id}`} className="card-footer-item ">See more</Link>
                       </div>
                   </div>
                 ))

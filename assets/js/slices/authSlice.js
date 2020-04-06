@@ -1,9 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
+import jwtDecode from 'jwt-decode'
+
+const isAuthenticated = () => {
+    const token = window.localStorage.getItem('authToken')
+
+    if (token) {
+        const { exp: expiration } = jwtDecode(token)
+        //* 1000 pour transformer secondes en millisecondes
+        if (expiration * 1000 > new Date().getTime()) {
+            axios.defaults.headers['Authorization'] = `Bearer ${token}`
+            return true
+        }
+    }
+    return false
+}
 
 const initialState = {
     isFetching: false,
-    isLogged: false
+    isLogged: isAuthenticated()
 }
 
 const authSlice = createSlice({

@@ -17,7 +17,6 @@ const LoginPage = ({ loginAttempt, history }) => {
 
         try {
             await loginAttempt(credentials)
-            setError('')
             history.replace('/')
         } catch (e) {
             setError('Invalid Credentials !')

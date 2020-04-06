@@ -1,27 +1,28 @@
 {
-    "devDependencies": {
-        "@symfony/webpack-encore": "^0.28.2",
-        "core-js": "^3.0.0",
-        "regenerator-runtime": "^0.13.2",
-        "webpack-notifier": "^1.6.0"
-    },
-    "license": "UNLICENSED",
-    "private": true,
-    "scripts": {
-        "dev-server": "encore dev-server --port 8080",
-        "dev": "encore dev",
-        "watch": "encore dev --watch",
-        "build": "encore production --progress"
-    },
-    "dependencies": {
-        "react-dom": "latest",
-      "react-router-dom": "latest",
-        "redux-logger": "latest",
-        "@reduxjs/toolkit": "latest",
-        "redux": "latest",
-        "axios": "latest",
-      "react": "latest",
-      "react-redux": "latest",
-      "moment": "latest"
-    }
+  "devDependencies": {
+    "@symfony/webpack-encore": "^0.28.2",
+    "core-js": "^3.0.0",
+    "regenerator-runtime": "^0.13.2",
+    "webpack-notifier": "^1.6.0"
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "dev-server": "encore dev-server --port 8080",
+    "dev": "encore dev",
+    "watch": "encore dev --watch",
+    "build": "encore production --progress"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "latest",
+    "axios": "latest",
+    "jwt-decode": "^2.2.0",
+    "moment": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-redux": "latest",
+    "react-router-dom": "latest",
+    "redux": "latest",
+    "redux-logger": "latest"
+  }
 }
