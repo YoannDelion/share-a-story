@@ -95,7 +95,8 @@ class Story
      */
     public function getContentPreview(): string
     {
-        return mb_substr($this->content, 0, 150).'...';
+        if (strlen($this->content) < 150) return $this->content;
+        return mb_substr($this->content, 0, 150) . '...';
     }
 
     public function setContent(string $content): self
