@@ -14,6 +14,7 @@ import PrivateRoute from './Components/PrivateRoute'
 import PublicRoute from './Components/PublicRoute'
 import StoryPage from './Components/StoryPage'
 import SignupPage from './Components/SignupPage'
+import AddStoryPage from './Components/AddStoryPage'
 
 const App = () => {
     // Allow access to the history object
@@ -24,6 +25,7 @@ const App = () => {
           <HashRouter>
               <NavbarWithRouter/>
               <Switch>
+                  <PrivateRoute path="/stories/new" component={AddStoryPage}/>
                   <PrivateRoute path="/stories/:id" component={StoryPage}/>
                   <PrivateRoute path="/stories" component={StoryListPage}/>
                   <PublicRoute path="/signup" component={SignupPage}/>

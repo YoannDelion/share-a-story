@@ -40,7 +40,7 @@ class StoryUserSubscriber implements EventSubscriberInterface
         $user = $this->security->getUser();
 
         if ($story instanceof Story && Request::METHOD_POST === $method) {
-            $story->setUser($user);
+            $story->setAuthor($user);
             $story->setCreatedAt(new \DateTime());
         }
         if ($story instanceof Story && Request::METHOD_PUT === $method) {

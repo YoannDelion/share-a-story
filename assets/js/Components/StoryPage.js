@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom'
 const StoryPage = ({ match }) => {
 
     const { id = 'new' } = match.params
-    const [editing, setEditing] = useState(false)
     const [isFetching, setIsFetching] = useState(false)
     const [story, setStory] = useState({
         content: '',
@@ -30,21 +29,14 @@ const StoryPage = ({ match }) => {
     }
 
     useEffect(() => {
-        if (id !== 'new') {
-            setEditing(true)
-            setIsFetching(true)
-            fetchStory(id)
-        }
+        setIsFetching(true)
+        fetchStory(id)
     }, [id])
-
-    console.log(story)
 
     return (
       <section className='section'>
           <div className='container'>
-              <h1 className='title'>
-                  {editing ? 'Edit Story' : 'Write a story'}
-              </h1>
+              <h1 className='title'>The Story</h1>
 
               {!isFetching ? (
                   <>

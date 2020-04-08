@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\StoryRepository")
  * @ApiResource(
+ *     attributes={"order"={"createdAt": "DESC"}},
  *     normalizationContext = { "groups" = { "story_item_read", "comment_collection_read", "category_collection_read", "user_collection_read" } },
  *     denormalizationContext = { "groups" = { "story_write" } },
  *     itemOperations = { "get", "put", "delete" },
