@@ -62,7 +62,8 @@ class Story
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="story", orphanRemoval=true)
-     * @Groups({"story_item_read"})
+     * @Groups({"story_item_read", "story_write"})
+     * @ORM\OrderBy({"createdAt" = "DESC"})
      */
     private $comments;
 

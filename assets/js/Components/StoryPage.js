@@ -1,36 +1,16 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
+import AddCommentForm from './AddCommentForm'
+import { fetchUniqueStory } from '../slices/storySlice'
 
-const StoryPage = ({ match }) => {
+const StoryPage = ({ match, story, isFetching, fetchUniqueStory }) => {
 
-    const { id = 'new' } = match.params
-    const [isFetching, setIsFetching] = useState(false)
-    const [story, setStory] = useState({
-        content: '',
-        author: {},
-        categories: [],
-        createdAt: '',
-        commentsNumber: 0,
-        comments: []
-    })
-
-    const fetchStory = async id => {
-        try {
-            const { content, author, categories, createdAt, commentsNumber, comments } = await axios.get(`http://127.0.0.1:8000/api/stories/${id}`)
-              .then(response => response.data)
-
-            setStory({ content, author, categories, createdAt, commentsNumber, comments })
-            setIsFetching(false)
-        } catch (e) {
-            console.error('An error occured !')
-        }
-    }
+    const { id } = match.params
 
     useEffect(() => {
-        setIsFetching(true)
-        fetchStory(id)
+        fetchUniqueStory(id)
     }, [id])
 
     return (
@@ -47,31 +27,40 @@ const StoryPage = ({ match }) => {
                               </p>
                           </div>
                           <div className="card-footer">
-                              <p className="card-footer-item">{story.author.email}</p>
+                              <p className="card-footer-item">{story.author ? story.author.email : 'Loading...'}</p>
                               <p className="card-footer-item">{moment(story.createdAt).format('DD/MM/YYYY hh:mm:ss')}</p>
-                              <p className="card-footer-item">{story.categories.map(category => <span key={category.id}
-                                                                                                      className="tag is-primary">{category.name}</span>
-                              )}</p>
+                              <p className="card-footer-item">{story.categories ? story.categories.map(category => (
+                                <span key={category.id} className="tag is-primary">{category.name}</span>
+                              )) : 'Loading...'
+                              }</p>
                           </div>
                       </div>
 
                       <div className="section">
-                          {story.commentsNumber > 0 ? (
-                              <>
-                                  <p className="subtitle">Comments</p>
-                                  {story.comments.map(comment => <div className="card" key={comment.id}>
-                                      <div className="card-content">
-                                          <p>{comment.content}</p>
-                                      </div>
-                                      <div className="card-footer">
-                                          <p
-                                            className="card-footer-item">{moment(comment.createdAt).format('DD/MM/YYYY hh:mm:ss')}</p>
-                                          <p className="card-footer-item">{comment.author.email}</p>
-                                      </div>
-                                  </div>)}
-                              </>)
-                            :
-                            <p className="subtitle">No comments</p>}
+                          <div className="columns">
+                              <div className="column">
+                                  {story.comments && story.comments.length > 0 ? (
+                                      <>
+                                          <p className="subtitle">Comments</p>
+                                          {story.comments.map(comment => <div className="card" key={comment.id}>
+                                              <div className="card-content">
+                                                  <p>{comment.content}</p>
+                                              </div>
+                                              <div className="card-footer">
+                                                  <p
+                                                    className="card-footer-item">{moment(comment.createdAt).format('DD/MM/YYYY hh:mm:ss')}</p>
+                                                  <p className="card-footer-item">{comment.author.email}</p>
+                                              </div>
+                                          </div>)}
+                                      </>)
+                                    :
+                                    <p className="subtitle">No comments</p>}
+                              </div>
+                              <div className="column">
+                                  <AddCommentForm/>
+                              </div>
+                          </div>
+
                       </div>
                   </>
                 )
@@ -85,4 +74,9 @@ const StoryPage = ({ match }) => {
     )
 }
 
-export default StoryPage
+const mapStateToProps = ({ storyReducer }) => ({
+    story: storyReducer.story,
+    isFetching: storyReducer.isFetching
+})
+
+export default connect(mapStateToProps, { fetchUniqueStory })(StoryPage)

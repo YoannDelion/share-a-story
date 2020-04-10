@@ -40,7 +40,7 @@ class CommentUserSubscriber implements EventSubscriberInterface
         $user = $this->security->getUser();
 
         if ($comment instanceof Comment && Request::METHOD_POST === $method) {
-            $comment->setUser($user);
+            $comment->setAuthor($user);
             $comment->setCreatedAt(new \DateTime());
         }
         if ($comment instanceof Comment && Request::METHOD_PUT === $method) {
