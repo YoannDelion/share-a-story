@@ -4,6 +4,7 @@ import moment from 'moment'
 import { Link } from 'react-router-dom'
 import AddCommentForm from './AddCommentForm'
 import { fetchUniqueStory } from '../slices/storySlice'
+import CommentCard from './CommentCard'
 
 const StoryPage = ({ match, story, isFetching, fetchUniqueStory }) => {
 
@@ -42,16 +43,7 @@ const StoryPage = ({ match, story, isFetching, fetchUniqueStory }) => {
                                   {story.comments && story.comments.length > 0 ? (
                                       <>
                                           <p className="subtitle">Comments</p>
-                                          {story.comments.map(comment => <div className="card" key={comment.id}>
-                                              <div className="card-content">
-                                                  <p>{comment.content}</p>
-                                              </div>
-                                              <div className="card-footer">
-                                                  <p
-                                                    className="card-footer-item">{moment(comment.createdAt).format('DD/MM/YYYY hh:mm:ss')}</p>
-                                                  <p className="card-footer-item">{comment.author.email}</p>
-                                              </div>
-                                          </div>)}
+                                          {story.comments.map(comment => <CommentCard key={comment.id} comment={comment}/>)}
                                       </>)
                                     :
                                     <p className="subtitle">No comments</p>}

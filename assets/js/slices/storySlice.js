@@ -35,15 +35,12 @@ const storySlice = createSlice({
             state.isFetching = false
         },
         addComment: state => {
-            state.isFetching = true
             state.errors = {}
         },
         addCommentSuccess: (state, action) => {
-            state.isFetching = false
             state.story.comments.push(action.payload)
         },
         addCommentError: (state, action) => {
-            state.isFetching = false
             action.payload.map(({ propertyPath, message }) => {
                 state.errors[propertyPath] = message
             })
