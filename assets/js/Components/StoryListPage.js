@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { fetchAllStories } from '../slices/storySlice'
 import moment from 'moment'
@@ -6,9 +6,9 @@ import { Link } from 'react-router-dom'
 
 const StoryListPage = ({ stories, isFetching, fetchAllStories }) => {
 
-    useState(() => {
+    useEffect(() => {
         fetchAllStories()
-    }, [stories])
+    }, [])
 
     return (
       <section className="section">
@@ -33,8 +33,6 @@ const StoryListPage = ({ stories, isFetching, fetchAllStories }) => {
                 :
                 <p>Loading...</p>
               }
-
-
           </div>
       </section>
     )
