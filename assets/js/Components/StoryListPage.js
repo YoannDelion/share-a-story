@@ -4,6 +4,7 @@ import { fetchAllStories } from '../slices/storySlice'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 import Pagination from './Pagination.js'
+import TextLoader from './Loaders/TextLoader'
 
 const StoryListPage = ({ stories, storiesCount, isFetching, fetchAllStories }) => {
 
@@ -47,7 +48,7 @@ const StoryListPage = ({ stories, storiesCount, isFetching, fetchAllStories }) =
                     )}
                 </>
                 :
-                <p>Loading...</p>
+                <TextLoader/>
               }
           </div>
       </section>

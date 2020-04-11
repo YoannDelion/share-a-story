@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import AddCommentForm from './AddCommentForm'
 import { fetchUniqueStory } from '../slices/storySlice'
 import CommentCard from './CommentCard'
+import TextLoader from './Loaders/TextLoader'
 
 const StoryPage = ({ match, story, isFetching, fetchUniqueStory }) => {
 
@@ -57,7 +58,7 @@ const StoryPage = ({ match, story, isFetching, fetchUniqueStory }) => {
                   </>
                 )
                 :
-                <p>Loading...</p>
+                <TextLoader/>
               }
 
               <Link to='/stories'>Go back</Link>
