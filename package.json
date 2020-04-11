@@ -23,6 +23,7 @@
     "react-redux": "latest",
     "react-router-dom": "latest",
     "redux": "latest",
-    "redux-logger": "latest"
+    "redux-logger": "latest",
+    "react-content-loader": "latest"
   }
 }
