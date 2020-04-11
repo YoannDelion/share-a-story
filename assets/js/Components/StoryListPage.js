@@ -1,14 +1,20 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { fetchAllStories } from '../slices/storySlice'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
+import Pagination from './Pagination.js'
 
-const StoryListPage = ({ stories, isFetching, fetchAllStories }) => {
+const StoryListPage = ({ stories, storiesCount, isFetching, fetchAllStories }) => {
+
+    const itemsPerPage = 10
+    const [currentPage, setCurrentPage] = useState(1)
 
     useEffect(() => {
-        fetchAllStories()
-    }, [])
+        fetchAllStories(itemsPerPage, currentPage)
+    }, [currentPage])
+
+    const handlePageChange = page => setCurrentPage(page)
 
     return (
       <section className="section">
@@ -17,19 +23,29 @@ const StoryListPage = ({ stories, isFetching, fetchAllStories }) => {
                   Story List Page
               </h1>
 
-              {!isFetching ? stories.map(story => (
-                  <div className="card" key={story.id}>
-                      <div className="card-content">
-                          <p>{story.contentPreview}</p>
+              {!isFetching ? <>
+                    {stories.map(story => (
+                      <div className="card" key={story.id}>
+                          <div className="card-content">
+                              <p>{story.contentPreview}</p>
+                          </div>
+                          <div className="card-footer">
+                              <p className="card-footer-item">{`Comments : ${story.commentsNumber}`}</p>
+                              <p className="card-footer-item">{moment(story.createdAt).format('DD/MM/YYYY hh:mm:ss')}</p>
+                              <p className="card-footer-item">{story.author.email}</p>
+                              <Link to={`/stories/${story.id}`} className="card-footer-item ">See more</Link>
+                          </div>
                       </div>
-                      <div className="card-footer">
-                          <p className="card-footer-item">{`Comments : ${story.commentsNumber}`}</p>
-                          <p className="card-footer-item">{moment(story.createdAt).format('DD/MM/YYYY hh:mm:ss')}</p>
-                          <p className="card-footer-item">{story.author.email}</p>
-                          <Link to={`/stories/${story.id}`} className="card-footer-item ">See more</Link>
-                      </div>
-                  </div>
-                ))
+
+                    ))}
+
+                    {storiesCount > itemsPerPage && (
+                      <Pagination currentPage={currentPage}
+                                  itemsPerPage={itemsPerPage}
+                                  length={storiesCount}
+                                  onPageChanged={handlePageChange}/>
+                    )}
+                </>
                 :
                 <p>Loading...</p>
               }
@@ -39,6 +55,7 @@ const StoryListPage = ({ stories, isFetching, fetchAllStories }) => {
 }
 const mapStateToProps = ({ storyReducer }) => ({
     stories: storyReducer.stories,
+    storiesCount: storyReducer.storiesCount,
     isFetching: storyReducer.isFetching
 })
 

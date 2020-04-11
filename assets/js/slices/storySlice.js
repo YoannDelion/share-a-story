@@ -4,6 +4,7 @@ import axios from 'axios'
 const initialState = {
     isFetching: false,
     stories: [],
+    storiesCount: 0,
     story: {},
     errors: {}
 }
@@ -15,7 +16,8 @@ const storySlice = createSlice({
         fetchStories: state => { state.isFetching = true },
         fetchStoriesSuccess: (state, action) => {
             state.isFetching = false
-            state.stories = action.payload
+            state.stories = action.payload['hydra:member']
+            state.storiesCount = action.payload['hydra:totalItems']
         },
         fetchStoriesError: state => {
             state.isFetching = false
@@ -56,11 +58,11 @@ export const {
 export default storySlice.reducer
 
 // Services Wrappers
-export const fetchAllStories = () => async dispatch => {
+export const fetchAllStories = (itemsPerPage, page) => async dispatch => {
     dispatch(fetchStories())
     try {
-        const stories = await axios.get('http://127.0.0.1:8000/api/stories')
-          .then(response => response.data['hydra:member'])
+        const stories = await axios.get(`http://127.0.0.1:8000/api/stories?itemsPerPage=${itemsPerPage}&page=${page}`)
+          .then(response => response.data)
         dispatch(fetchStoriesSuccess(stories))
     } catch (e) {
         dispatch(fetchStoriesError())
