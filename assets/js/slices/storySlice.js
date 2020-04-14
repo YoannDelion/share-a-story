@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
+import {toast} from 'react-toastify'
 
 const initialState = {
     isFetching: false,
@@ -75,6 +76,7 @@ export const addNewStory = story => async dispatch => {
         const data = await axios.post('http://127.0.0.1:8000/api/stories', story)
           .then(response => response.data)
         dispatch(addStorySuccess(data))
+        toast.success('Your story has been shared!')
     } catch (e) {
         dispatch(addStoryError())
     }
@@ -97,6 +99,7 @@ export const addStoryComment = comment => async dispatch => {
         const data = await axios.post('http://127.0.0.1:8000/api/comments', comment)
           .then(response => response.data)
         dispatch(addCommentSuccess(data))
+        toast.success('Comment published')
     } catch (e) {
         dispatch(addCommentError(e.response.data.violations))
     }

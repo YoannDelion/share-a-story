@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 import jwtDecode from 'jwt-decode'
+import { toast } from 'react-toastify'
 
 const isAuthenticated = () => {
     const token = window.localStorage.getItem('authToken')
@@ -31,7 +32,10 @@ const authSlice = createSlice({
             state.isLogged = true
         },
         loginError: state => { state.isFetching = false },
-        logout: state => { state.isLogged = false }
+        logout: state => {
+            state.isLogged = false
+            toast.info('Successfully logged out')
+        }
     }
 })
 
@@ -51,6 +55,7 @@ export const loginAttempt = credentials => async dispatch => {
         axios.defaults.headers['Authorization'] = `Bearer ${token}`
 
         dispatch(loginSuccess())
+        toast.success('Successfully logged in')
     } catch (e) {
         dispatch(loginError())
         throw e
