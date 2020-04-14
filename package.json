@@ -19,11 +19,12 @@
     "jwt-decode": "^2.2.0",
     "moment": "latest",
     "react": "latest",
+    "react-content-loader": "latest",
     "react-dom": "latest",
     "react-redux": "latest",
     "react-router-dom": "latest",
+    "react-toastify": "^5.5.0",
     "redux": "latest",
-    "redux-logger": "latest",
-    "react-content-loader": "latest"
+    "redux-logger": "latest"
   }
 }
