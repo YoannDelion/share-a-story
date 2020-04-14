@@ -6,8 +6,7 @@ const initialState = {
     isFetching: false,
     stories: [],
     storiesCount: 0,
-    story: {},
-    errors: {}
+    story: {}
 }
 
 const storySlice = createSlice({
@@ -43,11 +42,7 @@ const storySlice = createSlice({
         addCommentSuccess: (state, action) => {
             state.story.comments.push(action.payload)
         },
-        addCommentError: (state, action) => {
-            action.payload.map(({ propertyPath, message }) => {
-                state.errors[propertyPath] = message
-            })
-        }
+        addCommentError: () => {}
     }
 })
 
@@ -101,6 +96,7 @@ export const addStoryComment = comment => async dispatch => {
         dispatch(addCommentSuccess(data))
         toast.success('Comment published')
     } catch (e) {
-        dispatch(addCommentError(e.response.data.violations))
+        dispatch(addCommentError())
+        return Promise.reject(e)
     }
 }

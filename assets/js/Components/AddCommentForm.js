@@ -2,20 +2,26 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { addStoryComment } from '../slices/storySlice'
 
-const AddCommentForm = ({ story, addStoryComment, errors }) => {
+const AddCommentForm = ({ story, addStoryComment }) => {
 
     const [comment, setComment] = useState({ content: '', story: story['@id'] })
+    const [errors, setErrors] = useState({ content: '' })
 
     const handleChange = ({ currentTarget }) => {
         const { name, value } = currentTarget
         setComment({ ...comment, [name]: value })
     }
 
-    const handleSubmit = event => {
+    const handleSubmit = async event => {
         event.preventDefault()
-
-        addStoryComment(comment)
-        setComment({ ...comment, content: '' })
+        try {
+            await addStoryComment(comment)
+            setComment({ ...comment, content: '' })
+        } catch ({ response }) {
+            response.data.violations.map(({ propertyPath, message }) => {
+                setErrors({ errors, [propertyPath]: message })
+            })
+        }
     }
 
     return (
@@ -25,7 +31,7 @@ const AddCommentForm = ({ story, addStoryComment, errors }) => {
               <div className="field">
                   <div className="control">
                       <textarea name="content"
-                                className={'textarea' + (errors.hasOwnProperty('content') ? ' is-danger' : '')}
+                                className={'textarea' + (errors.content && ' is-danger')}
                                 maxLength="255"
                                 value={comment.content} onChange={handleChange}/>
                   </div>
@@ -42,8 +48,7 @@ const AddCommentForm = ({ story, addStoryComment, errors }) => {
 }
 
 const mapStateToProps = ({ storyReducer }) => ({
-    story: storyReducer.story,
-    errors: storyReducer.errors
+    story: storyReducer.story
 })
 
 export default connect(mapStateToProps, { addStoryComment })(AddCommentForm)

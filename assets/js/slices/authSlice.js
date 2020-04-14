@@ -58,6 +58,6 @@ export const loginAttempt = credentials => async dispatch => {
         toast.success('Successfully logged in')
     } catch (e) {
         dispatch(loginError())
-        throw e
+        return Promise.reject(e)
     }
 }
