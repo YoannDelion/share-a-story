@@ -5,9 +5,6 @@ import Navbar from './Components/Navbar'
 import { HashRouter, Route, Switch, withRouter } from 'react-router-dom'
 import HomePage from './Components/HomePage'
 import StoryListPage from './Components/StoryListPage'
-
-import '../css/app.scss'
-import 'bulma'
 import store from './store'
 import LoginPage from './Components/LoginPage'
 import PrivateRoute from './Components/PrivateRoute'
@@ -15,6 +12,14 @@ import PublicRoute from './Components/PublicRoute'
 import StoryPage from './Components/StoryPage'
 import SignupPage from './Components/SignupPage'
 import AddStoryPage from './Components/AddStoryPage'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.min.css'
+import '../css/app.scss'
+
+// Set up Toast notifications
+toast.configure({
+    position: toast.POSITION.BOTTOM_LEFT
+})
 
 const App = () => {
     // Allow access to the history object

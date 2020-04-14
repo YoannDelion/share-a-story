@@ -1,0 +1,17 @@
+.Toastify__toast {
+  &--success {
+    background: $primary;
+  }
+
+  &--error {
+    background: $danger;
+  }
+
+  &--warn {
+    background: $warning;
+  }
+
+  &--info {
+    background: $info;
+  }
+}
