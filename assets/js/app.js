@@ -5,7 +5,7 @@ import Navbar from './Components/Navbar'
 import { HashRouter, Route, Switch, withRouter } from 'react-router-dom'
 import HomePage from './Components/HomePage'
 import StoryListPage from './Components/StoryListPage'
-import store from './store'
+import store, { persistore } from './store'
 import LoginPage from './Components/LoginPage'
 import PrivateRoute from './Components/PrivateRoute'
 import PublicRoute from './Components/PublicRoute'
@@ -15,6 +15,7 @@ import AddStoryPage from './Components/AddStoryPage'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
 import '../css/app.scss'
+import { PersistGate } from 'redux-persist/integration/react'
 
 // Set up Toast notifications
 toast.configure({
@@ -27,17 +28,20 @@ const App = () => {
 
     return (
       <Provider store={store}>
-          <HashRouter>
-              <NavbarWithRouter/>
-              <Switch>
-                  <PrivateRoute path="/stories/new" component={AddStoryPage}/>
-                  <PrivateRoute path="/stories/:id" component={StoryPage}/>
-                  <PrivateRoute path="/stories" component={StoryListPage}/>
-                  <PublicRoute path="/signup" component={SignupPage}/>
-                  <PublicRoute path="/login" component={LoginPage}/>
-                  <Route path="/" component={HomePage}/>
-              </Switch>
-          </HashRouter>
+          {/* todo: loading component  */}
+          <PersistGate loading={null} persistor={persistore}>
+              <HashRouter>
+                  <NavbarWithRouter/>
+                  <Switch>
+                      <PrivateRoute path="/stories/new" component={AddStoryPage}/>
+                      <PrivateRoute path="/stories/:id" component={StoryPage}/>
+                      <PrivateRoute path="/stories" component={StoryListPage}/>
+                      <PublicRoute path="/signup" component={SignupPage}/>
+                      <PublicRoute path="/login" component={LoginPage}/>
+                      <Route path="/" component={HomePage}/>
+                  </Switch>
+              </HashRouter>
+          </PersistGate>
       </Provider>)
 }
 
