@@ -13,7 +13,9 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
-const middleware = [...getDefaultMiddleware(), logger]
+const middleware = [...getDefaultMiddleware({
+    serializableCheck: false,
+}), logger]
 
 const store = configureStore({
     reducer: persistedReducer,
