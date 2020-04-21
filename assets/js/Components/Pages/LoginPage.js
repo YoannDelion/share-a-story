@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { loginAttempt } from '../../slices/authSlice'
+import { loginAttempt } from '../../services/authAPI'
 import Field from '../Forms/Field'
 
 const LoginPage = ({ loginAttempt, history }) => {
@@ -32,8 +32,10 @@ const LoginPage = ({ loginAttempt, history }) => {
               </h1>
 
               <form onSubmit={handleSubmit}>
-                  <Field type='email' label='Email' name='username' onChange={handleChange} value={credentials.username} error={error} placeholder='Enter your email' />
-                  <Field type='password' label='Password' name='password' onChange={handleChange} value={credentials.password} error={error} />
+                  <Field type='email' label='Email' name='username' onChange={handleChange} value={credentials.username}
+                         error={error} placeholder='Enter your email'/>
+                  <Field type='password' label='Password' name='password' onChange={handleChange}
+                         value={credentials.password} error={error}/>
                   <div className='field'>
                       <div className='control'>
                           <button type='submit' className='button is-primary'>Submit</button>

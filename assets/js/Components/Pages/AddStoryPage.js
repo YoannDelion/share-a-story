@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import axios from 'axios'
-import { addNewStory } from '../../slices/storySlice'
+import { addNewStory } from '../../services/storiesAPI'
 import { connect } from 'react-redux'
 import Textarea from '../Forms/Textarea'
 

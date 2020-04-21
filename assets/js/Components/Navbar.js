@@ -1,15 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link, NavLink } from 'react-router-dom'
-import axios from 'axios'
-import { logout } from '../slices/authSlice'
+import { logingOut } from '../services/authAPI'
 
-const Navbar = ({ isLogged, logout, history }) => {
+const Navbar = ({ isLogged, logingOut, history }) => {
 
     const handleLogout = () => {
-        logout()
-        window.localStorage.removeItem('authToken')
-        delete axios.defaults.headers['Authorization']
+        logingOut()
         history.replace('/login')
     }
 
@@ -71,7 +68,7 @@ const mapStateToProps = (state) => ({
     isLogged: state.authReducer.isLogged
 })
 
-export default connect(mapStateToProps, { logout })(Navbar)
+export default connect(mapStateToProps, { logingOut })(Navbar)
 
 // Toggle menu on mobile
 document.addEventListener('DOMContentLoaded', () => {

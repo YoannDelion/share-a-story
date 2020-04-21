@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 import AddCommentForm from '../AddCommentForm'
-import { fetchUniqueStory } from '../../slices/storySlice'
+import { fetchUniqueStory } from '../../services/storiesAPI'
 import CommentCard from '../CommentCard'
 import TextLoader from '../Loaders/TextLoader'
 

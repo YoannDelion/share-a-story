@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import axios from 'axios'
 import Field from '../Forms/Field'
+import UsersAPI from '../../services/usersAPI'
+import { toast } from 'react-toastify'
 
 const SignupPage = ({ history }) => {
 
@@ -23,9 +24,9 @@ const SignupPage = ({ history }) => {
         }
 
         try {
-            await axios.post('http://127.0.0.1:8000/api/users', user)
+            await UsersAPI.create(user)
             setErrors({})
-            //success
+            toast.success('Account created!')
             history.replace('/login')
         } catch ({ response }) {
             response.data.violations.map(({ propertyPath, message }) => {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { fetchAllStories } from '../../slices/storySlice'
+import { fetchAllStories } from '../../services/storiesAPI'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 import Pagination from '../Pagination.js'
