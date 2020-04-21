@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { fetchAllStories } from '../slices/storySlice'
+import { fetchAllStories } from '../../slices/storySlice'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
-import Pagination from './Pagination.js'
-import TextLoader from './Loaders/TextLoader'
+import Pagination from '../Pagination.js'
+import TextLoader from '../Loaders/TextLoader'
 
 const StoryListPage = ({ stories, storiesCount, isFetching, fetchAllStories }) => {
 

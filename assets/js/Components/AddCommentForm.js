@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { addStoryComment } from '../slices/storySlice'
+import Textarea from './Forms/Textarea'
 
 const AddCommentForm = ({ story, addStoryComment }) => {
 
@@ -25,25 +26,15 @@ const AddCommentForm = ({ story, addStoryComment }) => {
     }
 
     return (
-      <>
-          <p className="subtitle">Add a new comment</p>
-          <form onSubmit={handleSubmit}>
-              <div className="field">
-                  <div className="control">
-                      <textarea name="content"
-                                className={'textarea' + (errors.content && ' is-danger')}
-                                maxLength="255"
-                                value={comment.content} onChange={handleChange}/>
-                  </div>
-                  {errors.content && <p className="help is-danger">{errors.content}</p>}
+      <form onSubmit={handleSubmit}>
+          <legend className="subtitle">Add a new comment</legend>
+          <Textarea onChange={handleChange} error={errors.content} value={comment.content} name='content' maxlength={255}/>
+          <div className="field">
+              <div className="control">
+                  <button className="button is-primary">Submit</button>
               </div>
-              <div className="field">
-                  <div className="control">
-                      <button className="button is-primary">Submit</button>
-                  </div>
-              </div>
-          </form>
-      </>
+          </div>
+      </form>
     )
 }
 

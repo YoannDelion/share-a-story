@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-import { addNewStory } from '../slices/storySlice'
+import { addNewStory } from '../../slices/storySlice'
 import { connect } from 'react-redux'
+import Textarea from '../Forms/Textarea'
 
 const AddStoryPage = ({ addNewStory, history }) => {
     const [story, setStory] = useState({ content: '' })
@@ -33,15 +34,8 @@ const AddStoryPage = ({ addNewStory, history }) => {
               <h1 className='title'>Share my story</h1>
 
               <form onSubmit={handleSubmit}>
-                  <div className="field">
-                      <div className="control">
-                          <textarea className={'textarea' + (errors.content && ' is-danger')}
-                                    placeholder="Start writing your story here"
-                                    name='content'
-                                    value={story.content} onChange={handleChange}/>
-                      </div>
-                      {errors.content && <p className="help is-danger">{errors.content}</p>}
-                  </div>
+                  <Textarea name='content' value={story.content} error={errors.content} onChange={handleChange}
+                            placeholder='Start writing your story here'/>
                   <div className='field'>
                       <div className='control'>
                           <button type='submit' className='button is-primary'>Submit</button>

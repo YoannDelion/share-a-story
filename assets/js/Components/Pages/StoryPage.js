@@ -2,10 +2,10 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
-import AddCommentForm from './AddCommentForm'
-import { fetchUniqueStory } from '../slices/storySlice'
-import CommentCard from './CommentCard'
-import TextLoader from './Loaders/TextLoader'
+import AddCommentForm from '../AddCommentForm'
+import { fetchUniqueStory } from '../../slices/storySlice'
+import CommentCard from '../CommentCard'
+import TextLoader from '../Loaders/TextLoader'
 
 const StoryPage = ({ match, story, isFetching, fetchUniqueStory }) => {
 
